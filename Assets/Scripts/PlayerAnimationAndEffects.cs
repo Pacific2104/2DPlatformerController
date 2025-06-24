@@ -9,7 +9,7 @@ public class PlayerAnimationAndEffects : MonoBehaviour
     [SerializeField, Tooltip("How much time to wait before the camera target start switching")]
     float _camTargetSwitchTime;
     [SerializeField, Tooltip("Time it takes for the camera target to lerp")]
-    float _camTargetSmoothTime;
+    public float _camTargetSmoothTime;
     [SerializeField] Animator _animator;
     [SerializeField] CameraShakeStats dashShake;
 
@@ -128,9 +128,9 @@ public class PlayerAnimationAndEffects : MonoBehaviour
     }
     void Jumped()
     {
+        SoundManager.instance.PlaySfx(SFX.Jump);
         _animator.SetTrigger(jumpkey);
         _animator.ResetTrigger(groundedkey);
-        SoundManager.instance.PlaySfx(SFX.Jump);
     }
     void GroundedChanged(bool grounded)
     {
@@ -140,9 +140,9 @@ public class PlayerAnimationAndEffects : MonoBehaviour
     }
     void Dashed()
     {
+        SoundManager.instance.PlaySfx(SFX.Dash);
         CameraShake.instance.ShakeDirectional(_player.InputDirection, dashShake);
         StartCoroutine(RefillStamina());
-        SoundManager.instance.PlaySfx(SFX.Dash);
     }
     IEnumerator RefillStamina()
     {

@@ -40,6 +40,7 @@ public class ControllerStatsScriptable : ScriptableObject
     public float coyoteTime;
 
     [Space(2), Header("Dash")]
+    public bool dashEnabled;
     [Tooltip("Instantanious velocity player reaches while dashing")]
     public float dashVelocity;
     [Tooltip("Buffer time between consecutive dashes")]

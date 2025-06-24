@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -13,33 +12,12 @@ public interface IPlayerInterface
 }
 public class PlayerController : MonoBehaviour, IPlayerInterface
 {
-    [Expandable] public ControllerStatsScriptable stats;
+    public ControllerStatsScriptable stats;
 
     Vector2 _inputVelocity;
-    public Vector2 InputVelocity {  get { return _inputVelocity; } set { _inputVelocity = value; } }
-
-    Vector2 _currentVelocity;
-    float _deceleration;
-    bool _grounded = true;
-    bool _inCoyoteTime = true;
-    bool _jumpEndEarly;
-
-    Coroutine _jumpCoroutine = null;
-    Coroutine _coyoteCoroutine = null;
+    public Vector2 InputVelocity { set { _inputVelocity = value; } }
 
     float _time = 0;
-
-    float _jumpPressTime = 0;
-    float _jumpReleaseTime = 0;
-    int _jumpCount = 0;
-
-    bool _dashing;
-    bool _dashInput;
-    bool _canDash;
-    float _dashedTime;
-    Vector2 _dashVelocity;
-
-    float _facingDirection = 1;
 
     Collider2D _col;
     Rigidbody2D _rb;
@@ -73,6 +51,10 @@ public class PlayerController : MonoBehaviour, IPlayerInterface
 
         _time += Time.deltaTime;
     }
+
+    #region HORIZONTAL MOVEMENT
+    Vector2 _currentVelocity;
+    float _deceleration;
     public void HorizontalVelocity()
     {
         if(_dashing) return;
@@ -83,11 +65,20 @@ public class PlayerController : MonoBehaviour, IPlayerInterface
         }
         else
         {
-            _facingDirection = Mathf.CeilToInt(_inputVelocity.x);
             _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, stats.maxSpeed * _inputVelocity.x, stats.acceleration * Time.deltaTime);
         }
     }
-    public void HandleJump()
+    #endregion
+
+    #region JUMP
+    float _jumpPressTime = 0;
+    float _jumpReleaseTime = 0;
+    int _jumpCount = 0;
+    bool _inCoyoteTime = true;
+    bool _jumpEndEarly = false;
+    Coroutine _jumpCoroutine = null;
+    Coroutine _coyoteCoroutine = null;
+    public void JumpInput()
     {
         if (_jumpCount == 0)
         {
@@ -137,12 +128,28 @@ public class PlayerController : MonoBehaviour, IPlayerInterface
             yield return null;
         }
     }
-    public void DashInput()
+    IEnumerator CoyoteTime()
     {
-        _dashInput = true;
+        _inCoyoteTime = true;
+        yield return new WaitForSeconds(stats.coyoteTime);
+        _grounded = false;
+        _inCoyoteTime = false;
     }
+    #endregion
+
+    #region DASH
+    bool _dashing;
+    bool _dashInput;
+    bool _canDash;
     int _dashedFrames = 0;
     int _dashInputFrames = 0;
+    float _dashedTime = 0;
+    Vector2 _dashVelocity;
+    public void DashInput()
+    {
+        if(stats.dashEnabled)
+            _dashInput = true;
+    }
     void HandleDash()
     {
         if(_dashInput && _canDash && stats.dashBuffer <= (_time - _dashedTime))
@@ -181,6 +188,10 @@ public class PlayerController : MonoBehaviour, IPlayerInterface
         _dashInputFrames = 0;
         _dashInput = false;
     }
+    #endregion
+
+    #region GRAVITY
+    bool _grounded = true;
     void Gravity()
     {
         if(_dashing) return;
@@ -200,6 +211,9 @@ public class PlayerController : MonoBehaviour, IPlayerInterface
             }
         }
     }
+    #endregion
+
+    #region BOUND CHECKS
     void CheckGrounded()
     {
         if (Physics2D.CircleCast(_col.bounds.center, _col.bounds.size.x / 2, Vector2.down, _col.bounds.size.y / 2 - stats.groundCheckRayOffset, ~stats.playerLayer))
@@ -243,11 +257,5 @@ public class PlayerController : MonoBehaviour, IPlayerInterface
             }
         }
     }
-    IEnumerator CoyoteTime()
-    {
-        _inCoyoteTime = true;
-        yield return new WaitForSeconds(stats.coyoteTime);
-        _grounded = false;
-        _inCoyoteTime = false;
-    }
+    #endregion
 }

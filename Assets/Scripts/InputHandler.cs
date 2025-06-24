@@ -19,7 +19,7 @@ public class InputHandler : MonoBehaviour
         {
             _controller = new CharacterInputs();
             _controller.Character.Walk.performed += i => player.InputVelocity = i.ReadValue<Vector2>();
-            _controller.Character.Jump.performed += i => { player.HandleJump(); };
+            _controller.Character.Jump.performed += i => { player.JumpInput(); };
             _controller.Character.Jump.canceled += i => { player.JumpReleased(); };
             _controller.Character.Dash.performed += i => { player.DashInput(); };
         }

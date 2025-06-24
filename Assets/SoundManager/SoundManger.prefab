@@ -52,32 +52,21 @@ MonoBehaviour:
   m_musicCrossfadeTime: 1
   m_musics:
   - bgm: 0
-    clip: {fileID: 8300000, guid: cb95215af9d4ea94d8bfb0973d0a2a4c, type: 3}
-  - bgm: 1
-    clip: {fileID: 8300000, guid: 166558c6bc886774ea12824eae8841d0, type: 3}
-  - bgm: 2
-    clip: {fileID: 8300000, guid: 78662d6989621b14a83aa4d89de19720, type: 3}
+    clip: {fileID: 8300000, guid: 9e60f1ec5b60acf43a1f219a9cb5c7b4, type: 3}
   m_sfxSource: {fileID: 3892640112047538158}
   m_sfxVolume: 0.5
   m_sounds:
   - sfx: 0
     clips:
-    - {fileID: 8300000, guid: 3def8116007348a4f80409a83d897611, type: 3}
-    - {fileID: 8300000, guid: c8fd81943700b2c4cbf4b9f5a0755c9b, type: 3}
-    - {fileID: 8300000, guid: 2f5a56b9a49f0a24b8d6fe2a5af0eaee, type: 3}
+    - {fileID: 8300000, guid: 4bce7c3a106115e4e973c3406b21c632, type: 3}
+    - {fileID: 8300000, guid: 668d42b9f0c8d0f4a954d5bbac0ef5be, type: 3}
+    - {fileID: 8300000, guid: 420fcabc08d08554299913fcad322b82, type: 3}
     pitchRange: {x: 0.9, y: 1.1}
     volumeMultiplier: 0.75
   - sfx: 1
     clips:
-    - {fileID: 8300000, guid: c792bb4c8614ae5498a36026469e59ef, type: 3}
-    - {fileID: 8300000, guid: 3e9c7f9c8c417704ebc77cd5a04a421e, type: 3}
-    pitchRange: {x: 0.9, y: 1.1}
-    volumeMultiplier: 0.75
-  - sfx: 2
-    clips:
-    - {fileID: 8300000, guid: 6f429ca7f011c0c46b89c3a67331382b, type: 3}
-    - {fileID: 8300000, guid: 1cd866d6d5871434794f2453666809ea, type: 3}
-    - {fileID: 8300000, guid: c066f628874fc184c8477b3affe4ce79, type: 3}
+    - {fileID: 8300000, guid: e6ef0a7b311e4b74398c75ff25e8c1c1, type: 3}
+    - {fileID: 8300000, guid: be61ff3f7bf049c469d4c1e11e0cbee4, type: 3}
     pitchRange: {x: 0.9, y: 1.1}
     volumeMultiplier: 0.75
 --- !u!1 &4174977168091039271
