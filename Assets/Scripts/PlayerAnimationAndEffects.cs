@@ -68,6 +68,8 @@ public class PlayerAnimationAndEffects : MonoBehaviour
             _player.Jumped += Jumped;
             _player.Grounded += GroundedChanged;
             _player.Dashed += Dashed;
+            _player.HardFall += HardGrounded;
+            _player.WallSmash += SmashedInWall;
         }
     }
     private void OnDisable()
@@ -77,6 +79,8 @@ public class PlayerAnimationAndEffects : MonoBehaviour
             _player.Jumped -= Jumped;
             _player.Grounded -= GroundedChanged;
             _player.Dashed -= Dashed;
+            _player.HardFall -= HardGrounded;
+            _player.WallSmash -= SmashedInWall;
         }
     }
     private void LateUpdate()
@@ -138,10 +142,18 @@ public class PlayerAnimationAndEffects : MonoBehaviour
         if(grounded)
             _animator.SetTrigger(groundedkey);
     }
+    void HardGrounded()
+    {
+        CameraController.ShakeDirectional(Vector2.down);
+    }
+    void SmashedInWall()
+    {
+        CameraController.ShakeDirectional(Vector2.right);
+    }
     void Dashed()
     {
         SoundManager.instance.PlaySfx(SFX.Dash);
-        CameraShake.instance.ShakeDirectional(_player.InputDirection, dashShake);
+        CameraController.ShakeDirectional(_player.InputDirection, dashShake);
         StartCoroutine(RefillStamina());
     }
     IEnumerator RefillStamina()

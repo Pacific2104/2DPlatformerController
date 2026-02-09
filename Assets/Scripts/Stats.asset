@@ -18,9 +18,10 @@ MonoBehaviour:
   groundCheckRayOffset: -0.1
   deadZone: 0.1
   maxSpeed: 12
-  acceleration: 60
+  acceleration: 120
   groundDeceleration: 70
   airDeceleration: 30
+  quickTurnAroundSpeed: 10
   maxJumpCount: 2
   jumpPower: 22
   groundingAcceleration: 2
@@ -28,6 +29,8 @@ MonoBehaviour:
   maxFallSpeed: 50
   jumpBuffer: 0.2
   jumpEndEarlyMultiplier: 2
+  hardFallTimeBuffer: 0.34
+  hardFallSpeed: 75
   coyoteTime: 0.1
   dashEnabled: 1
   dashVelocity: 30

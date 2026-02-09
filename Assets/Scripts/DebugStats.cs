@@ -8,7 +8,7 @@ public class DebugStats : MonoBehaviour
     public PlayerController playerController;
     IPlayerInterface _player;
     PlayerAnimationAndEffects _playerAnimationAndEffects;
-    CameraFollower _playerFollower;
+    CameraController _playerFollower;
     [SerializeField] Text _debugTMP;
     string[] _debugText;
     [SerializeField, Expandable] ControllerStatsScriptable stats;
@@ -26,7 +26,7 @@ public class DebugStats : MonoBehaviour
 #endif
         _player = playerController.GetComponent<IPlayerInterface>();
         _playerAnimationAndEffects = FindFirstObjectByType<PlayerAnimationAndEffects>();
-        _playerFollower = FindFirstObjectByType<CameraFollower>();
+        _playerFollower = FindFirstObjectByType<CameraController>();
         _debugText = new string[3];
 
         s_maxVelocity.onValueChanged.AddListener((i) => { stats.maxSpeed = i; t_maxVelocity.text = "Speed: " + i.ToString(); });
@@ -40,11 +40,6 @@ public class DebugStats : MonoBehaviour
             _playerAnimationAndEffects._camTargetSmoothTime = i;
             t_camSwitchTime.text = "Cam Switch Smooth time: " + _playerAnimationAndEffects._camTargetSmoothTime.ToString("n2");
         });
-        s_camFollowSoothTime.onValueChanged.AddListener(i =>
-        {
-            _playerFollower.smoothTime = i;
-            t_camFollowSoothTime.text = "Cam Follow Smooth time: " + _playerFollower.smoothTime.ToString("n2");
-        });
 
         r_maxVelocity = stats.maxSpeed;
         r_acceleration = stats.acceleration;
@@ -53,7 +48,6 @@ public class DebugStats : MonoBehaviour
         r_fallPower = stats.fallAcceleration;
         r_dashVelocity = stats.dashVelocity;
         r_camSwitchTime = _playerAnimationAndEffects._camTargetSmoothTime;
-        r_camFollowSoothTime = _playerFollower.smoothTime;
 
         ResetValues();
         StartCoroutine(FPS());
@@ -67,7 +61,6 @@ public class DebugStats : MonoBehaviour
         stats.fallAcceleration = r_fallPower;
         stats.dashVelocity = r_dashVelocity;
         _playerAnimationAndEffects._camTargetSmoothTime = r_camSwitchTime;
-        _playerFollower.smoothTime = r_camFollowSoothTime;
 
         s_maxVelocity.value = stats.maxSpeed;
         s_acceleration.value = stats.acceleration;
@@ -76,7 +69,6 @@ public class DebugStats : MonoBehaviour
         s_fallPower.value = stats.fallAcceleration;
         s_dashVelocity.value = stats.dashVelocity;
         s_camSwitchTime.value = _playerAnimationAndEffects._camTargetSmoothTime;
-        s_camFollowSoothTime.value = _playerFollower.smoothTime;
     }
     IEnumerator FPS()
     {

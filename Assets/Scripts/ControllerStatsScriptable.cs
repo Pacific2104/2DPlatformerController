@@ -20,6 +20,8 @@ public class ControllerStatsScriptable : ScriptableObject
     public float groundDeceleration;
     [Tooltip("Values by which player will deaccelerate in air")]
     public float airDeceleration;
+    [Tooltip("Speed under which player will turnaround quicker than usual")]
+    public float quickTurnAroundSpeed;
 
     [Space(2), Header("Jumps")]
     [Tooltip("Numer of times player can jump")]
@@ -36,6 +38,10 @@ public class ControllerStatsScriptable : ScriptableObject
     public float jumpBuffer;
     [Tooltip("Extra downward multiplier that comes in effect if the jump key key is released early")]
     public float jumpEndEarlyMultiplier;
+    [Tooltip("Time buffer after player reaches max fall speed to wait to trigger hard fall")]
+    public float hardFallTimeBuffer;
+    [Tooltip("Max fall velocity triggered after falling for a while")]
+    public float hardFallSpeed;
     [Tooltip("Time buffer where player can jump after leaving the edge")]
     public float coyoteTime;
 
