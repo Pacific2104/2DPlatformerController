@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6c2322ccf2cb3e48953b69f6c8c8b3c, type: 3}
-  m_Name: Stats
+  m_Name: SlipperyPlayer
   m_EditorClassIdentifier: 
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
   groundCheckRayOffset: -0.1
   deadZone: 0.1
-  maxSpeed: 12
-  acceleration: 120
-  groundDeceleration: 70
-  airDeceleration: 30
-  quickTurnAroundSpeed: 10
+  maxSpeed: 15
+  acceleration: 20
+  groundDeceleration: 10
+  airDeceleration: 25
+  quickTurnAroundSpeed: 14
   maxJumpCount: 2
   jumpPower: 22
   groundingAcceleration: 2
@@ -33,5 +33,5 @@ MonoBehaviour:
   hardFallSpeed: 75
   coyoteTime: 0.1
   dashEnabled: 1
-  dashVelocity: 35
+  dashVelocity: 25
   dashBuffer: 1

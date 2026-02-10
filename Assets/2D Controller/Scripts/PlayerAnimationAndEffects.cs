@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using System.Collections;
 using UnityEngine;
 
@@ -13,12 +12,9 @@ public class PlayerAnimationAndEffects : MonoBehaviour
     [SerializeField] Animator _animator;
     [SerializeField] CameraShakeStats dashShake;
 
-    [AnimatorParam("_animator")]
-    public int animatorSpeedkey;
-    [AnimatorParam("_animator")]
-    public int jumpkey;
-    [AnimatorParam("_animator")]
-    public int groundedkey;
+    public string speedkey;
+    public string jumpkey;
+    public string groundedkey;
 
     public SpriteRenderer _staminaBar;
 
@@ -29,7 +25,6 @@ public class PlayerAnimationAndEffects : MonoBehaviour
     float _goingBackTime;
     Vector3 _camTargetPos;
     Coroutine _cameraLerpRoutine;
-    Vector3 _ref = Vector3.zero;
 
     IPlayerInterface _player;
 
@@ -93,7 +88,7 @@ public class PlayerAnimationAndEffects : MonoBehaviour
     void HandleMoveAnimation()
     {
         float absVelocity = Mathf.Abs(_player.InputDirection.x);
-        _animator.SetFloat(animatorSpeedkey, Mathf.Lerp(0, 1, absVelocity));
+        _animator.SetFloat(speedkey, Mathf.Lerp(0, 1, absVelocity));
     }
     void HandleSpriteFlip()
     {

@@ -89,7 +89,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
     Coroutine _coyoteCoroutine = null;
     public void JumpInput()
     {
-        if (!_canMove && _jumpCount >= _stats.maxJumpCount + _currentModifiers.extraJumps) return;
+        if (!_canMove || _jumpCount >= _stats.maxJumpCount + _currentModifiers.extraJumps) return;
         if (_jumpCount > 0)
         {
             Jump();

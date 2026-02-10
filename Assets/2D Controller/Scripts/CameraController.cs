@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using System.Collections;
 using UnityEngine;
 
@@ -63,7 +62,6 @@ public class CameraController : MonoBehaviour
         m_follower.position = Vector3.Lerp(m_follower.position, m_desiredPos, m_finalLerpSpeed);
     }
 
-    [Button]
     public static void Shake()
     {
         Shake(instance.m_defaultStats);
