@@ -33,5 +33,5 @@ MonoBehaviour:
   hardFallSpeed: 75
   coyoteTime: 0.1
   dashEnabled: 1
-  dashVelocity: 30
+  dashVelocity: 35
   dashBuffer: 1

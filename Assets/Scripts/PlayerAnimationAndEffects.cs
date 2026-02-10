@@ -59,7 +59,7 @@ public class PlayerAnimationAndEffects : MonoBehaviour
     private void Start()
     {
         _staminaBarWidth = _staminaBar.transform.localScale.x;
-        _staminaRefillTime = GetComponentInParent<PlayerController>().stats.dashBuffer;
+        _staminaRefillTime = GetComponentInParent<PlayerController>()._stats.dashBuffer;
     }
     private void OnEnable()
     {
@@ -153,7 +153,7 @@ public class PlayerAnimationAndEffects : MonoBehaviour
     void Dashed()
     {
         SoundManager.instance.PlaySfx(SFX.Dash);
-        CameraController.ShakeDirectional(_player.InputDirection, dashShake);
+        CameraController.ShakeDirectional(_player.PlayerVelocity, dashShake);
         StartCoroutine(RefillStamina());
     }
     IEnumerator RefillStamina()

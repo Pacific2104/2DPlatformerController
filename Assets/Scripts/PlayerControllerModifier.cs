@@ -6,7 +6,7 @@ public struct StatsModifiers
     public float deaccelerationMult;
     public float gravityMult;
     public float jumpForceMult;
-    //public int jumpCount;
+    public int extraJumps;
     public static StatsModifiers Null => new StatsModifiers
     {
         speedMult = 1.0f,
@@ -14,7 +14,7 @@ public struct StatsModifiers
         deaccelerationMult = 1.0f,
         gravityMult = 1.0f,
         jumpForceMult = 1.0f,
-        //jumpCount = 1,
+        extraJumps = 0,
     };
 }
 

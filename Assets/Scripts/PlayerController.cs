@@ -14,13 +14,14 @@ public interface IPlayerInterface
 }
 public partial class PlayerController : MonoBehaviour, IPlayerInterface
 {
-    public ControllerStatsScriptable stats;
+    public ControllerStatsScriptable _stats;
 
     Vector2 _inputVelocity;
     public Vector2 InputVelocity { set { _inputVelocity = value; } }
 
     Collider2D _col;
     Rigidbody2D _rb;
+    bool _canMove;
 
     public Vector2 InputDirection => _inputVelocity;
     public Vector2 PlayerVelocity => _rb.velocity;
@@ -36,6 +37,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         _rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         _col = GetComponent<Collider2D>() ? GetComponent<Collider2D>() : gameObject.AddComponent<Collider2D>();
+        _canMove = true;
     }
     private void OnDisable()
     {
@@ -60,19 +62,19 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
     public void HorizontalVelocity()
     {
         if(_dashing) return;
-        _targetMaxSpeed = stats.maxSpeed * _currentModifiers.speedMult;
 
-        if (Math.Abs(_inputVelocity.x) < stats.deadZone || Math.Abs(_rb.velocity.x) > stats.maxSpeed)
+        if (!_canMove || Math.Abs(_inputVelocity.x) < _stats.deadZone || Math.Abs(_rb.velocity.x) > _stats.maxSpeed)
         {
-            _deceleration = _grounded ? stats.groundDeceleration : stats.airDeceleration;
+            _deceleration = _grounded ? _stats.groundDeceleration : _stats.airDeceleration;
             _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, 0, _deceleration * _currentModifiers.deaccelerationMult * Time.deltaTime);
         }
         else
         {
-            if (_currentVelocity.x * _inputVelocity.x < 0 && Mathf.Abs(_currentVelocity.x) <= stats.quickTurnAroundSpeed) //if input switched drections
-                _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, stats.maxSpeed * _inputVelocity.x, (stats.acceleration * _currentModifiers.accelerationMult + _deceleration * _currentModifiers.deaccelerationMult) * Time.deltaTime);
+            _targetMaxSpeed = _stats.maxSpeed * _currentModifiers.speedMult;
+            if (_currentVelocity.x * _inputVelocity.x < 0 && Mathf.Abs(_currentVelocity.x) <= _stats.quickTurnAroundSpeed) //if input switched drections
+                _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _stats.maxSpeed * _inputVelocity.x, (_stats.acceleration * _currentModifiers.accelerationMult + _deceleration * _currentModifiers.deaccelerationMult) * Time.deltaTime);
             else  //if same direction
-                _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _targetMaxSpeed * _inputVelocity.x, stats.acceleration * _currentModifiers.accelerationMult * Time.deltaTime);
+                _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, _targetMaxSpeed * _inputVelocity.x, _stats.acceleration * _currentModifiers.accelerationMult * Time.deltaTime);
         }
     }
     #endregion
@@ -80,21 +82,19 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
     #region JUMP
     float _jumpPressTime = 0;
     float _jumpReleaseTime = 0;
-    int _jumpCount = 0;
+    uint _jumpCount = 0;
     bool _inCoyoteTime = true;
     bool _jumpEndEarly = false;
     Coroutine _jumpCoroutine = null;
     Coroutine _coyoteCoroutine = null;
     public void JumpInput()
     {
-        if (_jumpCount == 0)
+        if (!_canMove && _jumpCount >= _stats.maxJumpCount + _currentModifiers.extraJumps) return;
+        if (_jumpCount > 0)
         {
-            if (_grounded && stats.jumpBuffer <= (Time.time - _jumpPressTime))
-            {
-                Jump();
-            }
+            Jump();
         }
-        else if(_jumpCount > 0 && _jumpCount < stats.maxJumpCount)
+        else if (_grounded && _stats.jumpBuffer <= (Time.time - _jumpPressTime))
         {
             Jump();
         }
@@ -131,14 +131,14 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
         while (t < 0.1f && !_dashing)
         {
             t += Time.deltaTime;
-            _currentVelocity.y = stats.jumpPower * _currentModifiers.jumpForceMult;    
+            _currentVelocity.y = _stats.jumpPower * _currentModifiers.jumpForceMult;    
             yield return null;
         }
     }
     IEnumerator CoyoteTime()
     {
         _inCoyoteTime = true;
-        yield return new WaitForSeconds(stats.coyoteTime);
+        yield return new WaitForSeconds(_stats.coyoteTime);
         _grounded = false;
         _inCoyoteTime = false;
     }
@@ -154,12 +154,12 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
     Vector2 _dashVelocity;
     public void DashInput()
     {
-        if(stats.dashEnabled)
+        if(_canMove && _stats.dashEnabled)
             _dashInput = true;
     }
     void HandleDash()
     {
-        if(_dashInput && _canDash && stats.dashBuffer <= (Time.time - _dashedTime))
+        if(_dashInput && _canDash && _stats.dashBuffer <= (Time.time - _dashedTime))
         {
             Vector2 dir = _inputVelocity.normalized;
             if (_dashInputFrames < 3)
@@ -171,7 +171,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
             {
                 _dashInputFrames = 0;
                 _dashInput = false;
-                _dashVelocity = dir * stats.dashVelocity;
+                _dashVelocity = dir * _stats.dashVelocity;
                 _canDash = false;
                 _dashing = true;
                 _dashedTime = Time.time;
@@ -211,23 +211,23 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
 
         if (_grounded && !_inCoyoteTime)
         {
-            _currentVelocity.y = -stats.groundingAcceleration * gravityMult;
+            _currentVelocity.y = -_stats.groundingAcceleration * gravityMult;
         }
         else
         {
-            _targetFallAcceleration = stats.fallAcceleration * gravityMult * Time.deltaTime;
-            _targetFallSpeed = -stats.maxFallSpeed;
-            if(_currentVelocity.y > -stats.maxFallSpeed)
+            _targetFallAcceleration = _stats.fallAcceleration * gravityMult * Time.deltaTime;
+            _targetFallSpeed = -_stats.maxFallSpeed;
+            if(_currentVelocity.y > -_stats.maxFallSpeed)
             {
                 _fallTime = Time.time;
             }
-            else if(Time.time - _fallTime >= stats.hardFallTimeBuffer)
+            else if(Time.time - _fallTime >= _stats.hardFallTimeBuffer)
             {
-                _targetFallSpeed = -stats.hardFallSpeed;
+                _targetFallSpeed = -_stats.hardFallSpeed;
             }
             if (_jumpEndEarly)
             {
-                _targetFallAcceleration *= stats.jumpEndEarlyMultiplier;
+                _targetFallAcceleration *= _stats.jumpEndEarlyMultiplier;
             }
             _currentVelocity.y = Mathf.MoveTowards(_currentVelocity.y, _targetFallSpeed, _targetFallAcceleration);
         }
@@ -237,7 +237,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
     #region BOUND CHECKS
     void CheckGrounded()
     {
-        if (Physics2D.CircleCast(_col.bounds.center, _col.bounds.size.x / 2, Vector2.down, _col.bounds.size.y / 2 - stats.groundCheckRayOffset, ~stats.playerLayer))
+        if (Physics2D.CircleCast(_col.bounds.center, _col.bounds.size.x / 2, Vector2.down, _col.bounds.size.y / 2 - _stats.groundCheckRayOffset, ~_stats.playerLayer))
         {
             if (_coyoteCoroutine != null && !_grounded)
             {
@@ -249,9 +249,10 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
                 _canDash = true;
                 _jumpCount = 0;
                 Grounded?.Invoke(true);
-                if(_currentVelocity.y < -stats.maxFallSpeed)
+                if(_currentVelocity.y < -_stats.maxFallSpeed)
                 {
                     HardFall?.Invoke();
+                    DisablePlaeyInput(0.3f);
                 }
             }
         }
@@ -271,11 +272,11 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
     }
     void CheckCeiling()
     {
-        if (Physics2D.CircleCast(_col.bounds.center, _col.bounds.size.x / 2, Vector2.up, _col.bounds.size.y / 2 - stats.groundCheckRayOffset, ~stats.playerLayer))
+        if (Physics2D.CircleCast(_col.bounds.center, _col.bounds.size.x / 2, Vector2.up, _col.bounds.size.y / 2 - _stats.groundCheckRayOffset, ~_stats.playerLayer))
         {
             if (_rb.velocity.y >= 0)
             {
-                _currentVelocity.y = Mathf.MoveTowards(_currentVelocity.y, 0, stats.fallAcceleration * Time.deltaTime);
+                _currentVelocity.y = Mathf.MoveTowards(_currentVelocity.y, 0, _stats.fallAcceleration * Time.deltaTime);
                 JumpEnd();
                 _jumpEndEarly = true;
                 _dashing = false;
@@ -284,14 +285,30 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
     }
     void CheckWalls()
     {
-        if (Math.Abs(_rb.velocity.x) < stats.deadZone) return;
-        if (Physics2D.Raycast(_col.bounds.center, Vector2.right * Math.Sign(_rb.velocity.x), _col.bounds.size.x * 1.5f, ~stats.playerLayer))
+        if (Math.Abs(_rb.velocity.x) < _stats.deadZone) return;
+        if (Physics2D.Raycast(_col.bounds.center, Vector2.right * Math.Sign(_rb.velocity.x), _col.bounds.size.x * 1.5f, ~_stats.playerLayer))
         {
-            if (Math.Abs(_currentVelocity.x) > stats.maxSpeed)
+            if (Math.Abs(_currentVelocity.x) > _stats.maxSpeed)
+            {
                 WallSmash?.Invoke();
+                DisablePlaeyInput(0.25f);
+            }
 
             _currentVelocity.x = 0;
         }
     }
     #endregion
+
+    void DisablePlaeyInput(float time = 0)
+    {
+        _canMove = false;
+        if(time > 0)
+        {
+            Invoke(nameof(EnablePlayerInput), time);
+        }
+    }
+    void EnablePlayerInput()
+    {
+        _canMove = true;
+    }
 }

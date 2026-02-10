@@ -35,6 +35,7 @@ public class CameraController : MonoBehaviour
     private Vector3 m_shakerOriginalPos;
     private Coroutine m_shakeRoutine;
     private bool m_isShaking;
+    private float m_finalLerpSpeed;
 
     private static CameraController instance;
     private void Awake()
@@ -45,7 +46,7 @@ public class CameraController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (m_target == null || m_isShaking) return;
+        if (m_target == null) return;
         m_targetPos = m_target.position;
 
         // Clamp X and Z
@@ -54,17 +55,22 @@ public class CameraController : MonoBehaviour
         m_desiredPos = new Vector3(clampedX, clampedY, m_follower.position.z);
 
         // Smooth Lerp movement
-        m_follower.position = Vector3.Lerp(m_follower.position, m_desiredPos, Time.fixedDeltaTime * m_lerpSpeed);
+        m_finalLerpSpeed = Time.fixedDeltaTime * m_lerpSpeed;
+        if (m_isShaking)
+        {
+            m_finalLerpSpeed *= 2.5f;
+        }
+        m_follower.position = Vector3.Lerp(m_follower.position, m_desiredPos, m_finalLerpSpeed);
     }
 
     [Button]
     public static void Shake()
     {
-        ShakeDirectional(Vector2.one, instance.m_defaultStats);
+        Shake(instance.m_defaultStats);
     }
     public static void Shake(CameraShakeStats stats)
     {
-        ShakeDirectional(Vector2.one, stats);
+        instance.StartShake(Vector2.one, stats);
     }
     public static void ShakeDirectional(Vector2 direction)
     {
@@ -72,8 +78,8 @@ public class CameraController : MonoBehaviour
     }
     public static void ShakeDirectional(Vector2 direction, CameraShakeStats stats)
     {
-        Vector2 dir = direction + Random.insideUnitCircle / 10;
-        instance.StartShake(dir, stats);
+        Vector2 dir = direction + Random.insideUnitCircle / 2.5f;
+        instance.StartShake(dir.normalized, stats);
     }
     void StartShake(Vector2 direction, CameraShakeStats stats)
     {
@@ -89,7 +95,7 @@ public class CameraController : MonoBehaviour
         m_isShaking = true;
         m_shakerOriginalPos = m_shaker.localPosition;
         float elapsed = 0.0f;
-        direction += Random.insideUnitCircle * 0.1f;
+
         while (elapsed < stats._duration)
         {
             Vector2 shake = stats._magnitude * direction * Random.insideUnitCircle;

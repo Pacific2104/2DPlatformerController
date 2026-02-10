@@ -1078,7 +1078,7 @@ MonoBehaviour:
   m_vertcialClamp: {x: -2.5, y: 50}
   m_shaker: {fileID: 519420032}
   m_defaultStats:
-    _magnitude: 0.3
+    _magnitude: 0.5
     _duration: 0.25
 --- !u!4 &867912948
 Transform:
@@ -3310,6 +3310,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3587763491467669553, guid: 39a4f6019d4dd914db8a5389c4c760a3, type: 3}
+      propertyPath: _stats
+      value: 
+      objectReference: {fileID: 11400000, guid: d3540dc19caf3264b9b5396db4271127, type: 2}
     - target: {fileID: 4372569964971304957, guid: 39a4f6019d4dd914db8a5389c4c760a3, type: 3}
       propertyPath: m_Name
       value: Player
