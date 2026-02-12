@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -42,8 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -66,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 0
@@ -148,6 +145,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 29041813}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -171,7 +169,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -182,7 +181,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!212 &29041815
@@ -202,6 +200,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -308,7 +309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.1764706}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -446,7 +447,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.1764706}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -640,7 +641,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0, b: 0, a: 0.1764706}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -949,6 +950,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 551113673}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -972,7 +974,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 36, y: 0.4}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -983,7 +986,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 77, y: 0.8}
   m_EdgeRadius: 0
 --- !u!1001 &557454690
@@ -1456,23 +1458,23 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 78662d6989621b14a83aa4d89de19720, type: 3}
     - target: {fileID: 7660306576258689924, guid: ad81fbc7c76a92d43952de7ba679c3df, type: 3}
-      propertyPath: m_sounds.Array.data[0].clips.Array.data[0]
+      propertyPath: 'm_sounds.Array.data[0].clips.Array.data[0]'
       value: 
       objectReference: {fileID: 8300000, guid: 4bce7c3a106115e4e973c3406b21c632, type: 3}
     - target: {fileID: 7660306576258689924, guid: ad81fbc7c76a92d43952de7ba679c3df, type: 3}
-      propertyPath: m_sounds.Array.data[0].clips.Array.data[1]
+      propertyPath: 'm_sounds.Array.data[0].clips.Array.data[1]'
       value: 
       objectReference: {fileID: 8300000, guid: 668d42b9f0c8d0f4a954d5bbac0ef5be, type: 3}
     - target: {fileID: 7660306576258689924, guid: ad81fbc7c76a92d43952de7ba679c3df, type: 3}
-      propertyPath: m_sounds.Array.data[0].clips.Array.data[2]
+      propertyPath: 'm_sounds.Array.data[0].clips.Array.data[2]'
       value: 
       objectReference: {fileID: 8300000, guid: 420fcabc08d08554299913fcad322b82, type: 3}
     - target: {fileID: 7660306576258689924, guid: ad81fbc7c76a92d43952de7ba679c3df, type: 3}
-      propertyPath: m_sounds.Array.data[1].clips.Array.data[0]
+      propertyPath: 'm_sounds.Array.data[1].clips.Array.data[0]'
       value: 
       objectReference: {fileID: 8300000, guid: e6ef0a7b311e4b74398c75ff25e8c1c1, type: 3}
     - target: {fileID: 7660306576258689924, guid: ad81fbc7c76a92d43952de7ba679c3df, type: 3}
-      propertyPath: m_sounds.Array.data[1].clips.Array.data[1]
+      propertyPath: 'm_sounds.Array.data[1].clips.Array.data[1]'
       value: 
       objectReference: {fileID: 8300000, guid: be61ff3f7bf049c469d4c1e11e0cbee4, type: 3}
     m_RemovedComponents: []
@@ -2216,7 +2218,6 @@ GameObject:
   - component: {fileID: 1411731940}
   - component: {fileID: 1411731939}
   - component: {fileID: 1411731938}
-  - component: {fileID: 1411731937}
   m_Layer: 5
   m_Name: ScreenDivide
   m_TagString: Untagged
@@ -2224,23 +2225,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1411731937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1411731936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1411731938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2281,7 +2265,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -2859,6 +2843,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2966,6 +2953,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2059797138}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -2989,7 +2977,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 60, y: 25}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -3000,7 +2989,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 1, y: 100}
   m_EdgeRadius: 0
 --- !u!61 &2059797141
@@ -3011,6 +2999,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2059797138}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -3034,7 +3023,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: -18, y: 25}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -3045,7 +3035,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 1, y: 100}
   m_EdgeRadius: 0
 --- !u!1001 &2093882847
@@ -3465,7 +3454,7 @@ PrefabInstance:
     - target: {fileID: 3587763491467669553, guid: 39a4f6019d4dd914db8a5389c4c760a3, type: 3}
       propertyPath: _stats
       value: 
-      objectReference: {fileID: 11400000, guid: d3540dc19caf3264b9b5396db4271127, type: 2}
+      objectReference: {fileID: 11400000, guid: 05180cbb0ca651c40b67140cb2ade95d, type: 2}
     - target: {fileID: 4372569964971304957, guid: 39a4f6019d4dd914db8a5389c4c760a3, type: 3}
       propertyPath: m_Name
       value: Player

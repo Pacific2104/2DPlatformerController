@@ -24,7 +24,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
     bool _canMove;
 
     public Vector2 InputDirection => _inputVelocity;
-    public Vector2 PlayerVelocity => _rb.velocity;
+    public Vector2 PlayerVelocity => _rb.linearVelocity;
     public event Action Jumped;
     public event Action<bool> Grounded;
     public event Action Dashed;
@@ -45,7 +45,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
     }
     private void FixedUpdate()
     {
-        _rb.velocity = _currentVelocity;
+        _rb.linearVelocity = _currentVelocity;
 
         CheckGrounded();
         CheckCeiling();
@@ -63,7 +63,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
     {
         if(_dashing) return;
 
-        if (!_canMove || Math.Abs(_inputVelocity.x) < _stats.deadZone || Math.Abs(_rb.velocity.x) > _stats.maxSpeed)
+        if (!_canMove || Math.Abs(_inputVelocity.x) < _stats.deadZone || Math.Abs(_rb.linearVelocity.x) > _stats.maxSpeed)
         {
             _deceleration = _grounded ? _stats.groundDeceleration : _stats.airDeceleration;
             _currentVelocity.x = Mathf.MoveTowards(_currentVelocity.x, 0, _deceleration * _currentModifiers.deaccelerationMult * Time.deltaTime);
@@ -119,7 +119,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
         {
             StopCoroutine(_jumpCoroutine);
             _jumpCoroutine = null;
-            if (_rb.velocity.y > 0 && (_jumpPressTime - _jumpReleaseTime) < 1.0f)
+            if (_rb.linearVelocity.y > 0 && (_jumpPressTime - _jumpReleaseTime) < 1.0f)
             {
                 _jumpEndEarly = true;
             }
@@ -274,7 +274,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
     {
         if (Physics2D.CircleCast(_col.bounds.center, _col.bounds.size.x / 2, Vector2.up, _col.bounds.size.y / 2 - _stats.groundCheckRayOffset, ~_stats.playerLayer))
         {
-            if (_rb.velocity.y >= 0)
+            if (_rb.linearVelocity.y >= 0)
             {
                 _currentVelocity.y = Mathf.MoveTowards(_currentVelocity.y, 0, _stats.fallAcceleration * Time.deltaTime);
                 JumpEnd();
@@ -285,8 +285,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerInterface
     }
     void CheckWalls()
     {
-        if (Math.Abs(_rb.velocity.x) < _stats.deadZone) return;
-        if (Physics2D.Raycast(_col.bounds.center, Vector2.right * Math.Sign(_rb.velocity.x), _col.bounds.size.x * 1.5f, ~_stats.playerLayer))
+        if (Math.Abs(_rb.linearVelocity.x) < _stats.deadZone) return;
+        if (Physics2D.Raycast(_col.bounds.center, Vector2.right * Math.Sign(_rb.linearVelocity.x), _col.bounds.size.x * 1.5f, ~_stats.playerLayer))
         {
             if (Math.Abs(_currentVelocity.x) > _stats.maxSpeed)
             {
